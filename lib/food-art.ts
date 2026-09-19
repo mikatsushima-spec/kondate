@@ -1,0 +1,6 @@
+const names=["カレーライス","ピクルス","やさいスープ","ホイコーローどん","はるさめスープ","なし","ごはん","こあじのからあげ","やさいのにんにくしょうゆあえ","にくじゃが","いしかりごはん","ちくわのいそべあげ","にびたし","とんじる","きつねうどん","きゅうりとちくわのすのもの","だいがくいも","カレーミートドッグ","コーンシチュー","れいとうみかん","とりのピリカラやき","だいずのあまからあげ","チキンライス","ホキのぱんこやき","ＡＢＣマカロニスープ","ジャージャーめん","フライドポテト","たまごスープ","さんまのかばやきごはん","いとかんてんのごまずあえ","みそしる","パエリアふうピラフ","スパニッシュオムレツ","ホールコーンスープ","さつまいもごはん","さばのねぎみそやき","さわにわん","つきみだんご","シナモントースト","ポークシチュー","ツナひじきサラダ","ごもくチャーハン","もやしのちゅうかサラダ","わかめスープ","ツナピラフ","ゆでやさいかわりソース","しろいんげんまめのポタージュ","ゆかりごはん","ぶりのたつたあげ","おひたし","スパゲッティミートソース","ようふうたまごスープ","りんごゼリー","くろざとうパン","パンプキングラタン","ミネストローネ","ぎゅうにゅう","おさら","きゅうりとトマト","ブロッコリー","むしどり","しゃぶしゃぶ","ぎゅうにくのやきにく","ポークステーキ"];
+export const normalized=(s:string)=>s.normalize("NFKC").replace(/[\s　]/g,"").toLowerCase();
+export const foodCatalog=names.map((name,art)=>({name,art}));
+export function findArt(name:string){return normalized(name)==="やさいじる"?2:foodCatalog.find(x=>normalized(x.name)===normalized(name))?.art;}
+export function artStyle(art=57){const cell=art%16;return{backgroundImage:`url(/food/lunch-${Math.floor(art/16)+1}.webp)`,backgroundSize:"400% 400%",backgroundPosition:`${(cell%4)*100/3}% ${Math.floor(cell/4)*100/3}%`};}
+export function kana(s:string){return s.replace(/[ァ-ヶ]/g,c=>String.fromCharCode(c.charCodeAt(0)-0x60)).replace(/ＡＢＣ|ABC/gi,"えーびーしー");}

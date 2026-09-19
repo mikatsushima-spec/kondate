@@ -1,0 +1,8 @@
+"use client";
+import {Select,SelectTrigger,SelectValue,SelectContent,SelectItem} from "@/components/ui/select";
+import {Checkbox} from "@/components/ui/checkbox";
+import {AlertDialog,AlertDialogContent,AlertDialogTitle,AlertDialogDescription,AlertDialogFooter,AlertDialogAction,AlertDialogCancel} from "@/components/ui/alert-dialog";
+import type {ReactNode} from "react";
+export function Choice({value,onChange,options,label}:{value:string;onChange:(v:string)=>void;options:{value:string;label:string}[];label:string}){return <Select value={value} onValueChange={onChange}><SelectTrigger className="choice" aria-label={label}><SelectValue/></SelectTrigger><SelectContent position="popper">{options.map(o=><SelectItem key={o.value} value={o.value} className="choice-item">{o.label}</SelectItem>)}</SelectContent></Select>;}
+export function Check({checked,onChange,children}:{checked:boolean;onChange:(b:boolean)=>void;children:ReactNode}){return <label className="check-row"><Checkbox checked={checked} onCheckedChange={b=>onChange(b===true)}/><span>{children}</span></label>;}
+export function Confirm({open,onOpenChange,title,description,onConfirm,action="実行する"}:{open:boolean;onOpenChange:(b:boolean)=>void;title:string;description:string;onConfirm:()=>void;action?:string}){return <AlertDialog open={open} onOpenChange={onOpenChange}><AlertDialogContent className="confirm-dialog"><AlertDialogTitle>{title}</AlertDialogTitle><AlertDialogDescription>{description}</AlertDialogDescription><AlertDialogFooter><AlertDialogCancel>もどる</AlertDialogCancel><AlertDialogAction onClick={onConfirm}>{action}</AlertDialogAction></AlertDialogFooter></AlertDialogContent></AlertDialog>;}

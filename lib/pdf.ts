@@ -1,0 +1,12 @@
+import {parseLayout,type PdfPageData,type PdfPicture} from "./pdf-layout";
+import type {PDFDocumentProxy} from "pdfjs-dist";
+let pdfLib:Promise<typeof import("pdfjs-dist")>|null=null;
+export function getPdfLib(){if(!pdfLib)pdfLib=import("pdfjs-dist").then(pdf=>{pdf.GlobalWorkerOptions.workerSrc="/pdfjs/pdf.worker.min.mjs";return pdf;});return pdfLib;}
+export async function openPdf(file:File|Uint8Array){if(file instanceof File){if(file.size>10*1024*1024)throw Error("PDFは10MB以内にしてください。");if(!/\.pdf$/i.test(file.name))throw Error("PDFファイルを選んでください。");}
+ const bytes=file instanceof Uint8Array?file:new Uint8Array(await file.arrayBuffer());if(new TextDecoder().decode(bytes.slice(0,5))!=="%PDF-")throw Error("PDFファイルを選んでください。");
+ const pdf=await getPdfLib();try{const doc=await pdf.getDocument({data:bytes,useSystemFonts:true}).promise;if(doc.numPages>5){await doc.loadingTask.destroy();throw Error("PDFは5ページ以内にしてください。");}return doc;}catch(e){if(e instanceof Error&&e.name==="PasswordException")throw Error("パスワードが付いたPDFは読み込めません。解除したファイルを選んでください。");throw Error(e instanceof Error&&e.message.includes("5ページ")?e.message:"PDFを開けませんでした。壊れていないか確認してください。");}}
+const multiply=(a:number[],b:number[])=>[a[0]*b[0]+a[2]*b[1],a[1]*b[0]+a[3]*b[1],a[0]*b[2]+a[2]*b[3],a[1]*b[2]+a[3]*b[3],a[0]*b[4]+a[2]*b[5]+a[4],a[1]*b[4]+a[3]*b[5]+a[5]];
+export async function extractPdf(doc:PDFDocumentProxy,year:number,month:number){const pdf=await getPdfLib();const pages:PdfPageData[]=[];for(let i=1;i<=doc.numPages;i++){const page=await doc.getPage(i),view=page.getViewport({scale:1});const text=await page.getTextContent();const words=text.items.filter(x=>"str"in x&&x.str.trim()).map(x=>{if(!("str"in x))throw Error("text");return{text:x.str,x:x.transform[4],y:view.height-x.transform[5]-x.height*.5,w:x.width,h:x.height};});const ops=await page.getOperatorList();let matrix=[1,0,0,1,0,0];const stack:number[][]=[];const pictures:PdfPicture[]=[];
+ for(let k=0;k<ops.fnArray.length;k++){const op=ops.fnArray[k],args=ops.argsArray[k];if(op===pdf.OPS.save)stack.push([...matrix]);else if(op===pdf.OPS.restore)matrix=stack.pop()??[1,0,0,1,0,0];else if(op===pdf.OPS.transform)matrix=multiply(matrix,args);else if(op===pdf.OPS.paintImageXObject||op===pdf.OPS.paintInlineImageXObject){pictures.push({x:matrix[4]+(matrix[0]+matrix[2])/2,y:view.height-matrix[5]-(matrix[1]+matrix[3])/2,width:Math.abs(matrix[0]),height:Math.abs(matrix[3])});}}
+ pages.push({width:view.width,height:view.height,words,pictures});}
+ return parseLayout(pages,year,month);}
