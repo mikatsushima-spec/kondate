@@ -5,4 +5,4 @@ export interface LunchMonth{key:string;name:string;pdf?:string;days:Record<strin
 export interface DinnerSelection{id:string;seen:string[];trail:string[];}
 export interface AppData{version:1;revision:number;months:Record<string,LunchMonth>;dinner:Record<string,string>;suggestions:Record<string,DinnerSelection>;favorites:string[];dislikes:string[];images:Record<string,string>;shopping:Record<string,string[]>;}
 export interface Ingredient{name:string;amount:string;category:"野菜"|"肉"|"その他";}
-export interface Dinner{id:string;category:string;title:string;main:string;side:string;reading:string;time:number;image:string;weeklyLimited:boolean;ingredients:Ingredient[];steps:[string,string,string];stepLabels:[string,string,string];}
+export interface Dinner{source?:{name:string;url:string};id:string;category:string;title:string;main:string;side:string;reading:string;time:number;image:string;weeklyLimited:boolean;ingredients:Ingredient[];steps:[string,string,string];stepLabels:[string,string,string];}

@@ -1,7 +1,7 @@
 /* Build updates this list with hashed application assets. Personal data lives in IndexedDB. */
 const VERSION='kondate-v1';
 const CACHE=VERSION+'-shell';
-const PRECACHE=['/','/manifest.webmanifest','/favicon.svg','/icon-192.png','/icon-512.png','/pdfjs/pdf.worker.min.mjs',...Array.from({length:4},(_,i)=>`/food/lunch-${i+1}.webp`),...['beef','shabu','chicken','pork','nikujaga','tomato','curry','stew'].map(id=>`/food/dinner-${id}.webp`)];
+const PRECACHE=['/','/manifest.webmanifest','/favicon.svg','/icon-192.png','/icon-512.png','/pdfjs/pdf.worker.min.mjs',...Array.from({length:4},(_,i)=>`/food/lunch-${i+1}.webp`),...['beef','shabu','chicken','pork','nikujaga','tomato','curry','stew','mapo','saute','yakisuki'].map(id=>`/food/dinner-${id}.webp`)];
 const APP_ASSETS=[]; // populated by scripts/prepare-offline.mjs
 async function prepare(){const cache=await caches.open(CACHE);let okay=true;for(const path of [...PRECACHE,...APP_ASSETS]){try{const response=await fetch(path,{credentials:'same-origin',cache:'reload'});if(!response.ok||response.redirected||new URL(response.url).origin!==self.location.origin)throw Error('Not an application response');await cache.put(path,response);}catch{if(!await cache.match(path))okay=false;}}const clients=await self.clients.matchAll({includeUncontrolled:true});clients.forEach(c=>c.postMessage({type:okay?'OFFLINE_READY':'OFFLINE_FAILED'}));}
 self.addEventListener('install',event=>{event.waitUntil(prepare().then(()=>self.skipWaiting()));});
