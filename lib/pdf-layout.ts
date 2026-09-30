@@ -18,17 +18,18 @@ export function parseLayout(pages:PdfPageData[],year:number,month:number):ParseR
  const row=words.filter(w=>w.y>=top&&w.y<bottom);const all=row.map(w=>w.text).join("");const date=`${year}-${String(month).padStart(2,"0")}-${String(Number(norm(a.text))).padStart(2,"0")}`;
  if(!validDate(date))throw Error(`存在しない日付（${date}）を検出しました。`);if(days[date])throw Error(`${date}が重複しています。PDFを確認してください。`);
  const expected="日月火水木金土"[dateObj(date).getUTCDay()];if(a.weekday&&a.weekday!==expected)throw Error(`${Number(norm(a.text))}日の曜日が合いません。対象年・月を確認してください。`);
- const noMeal=/(けいろうのひ|こくみんのきゅうじつ|しゅうぶんのひ|きゅうしょくなし|給食なし|休校|祝日|敬老の日|秋分の日|国民の休日)/.test(all);
- const eventHits=row.filter(w=>/郷土料理|月見メニュー|行事|メニュー☆/.test(w.text));
+ const holiday=norm(all).match(/スポーツのひ|すぽーつのひ|スポーツの日|たいいくのひ|体育の日|けいろうのひ|こくみんのきゅうじつ|しゅうぶんのひ|きゅうしょくなし|給食なし|休校|祝日|敬老の日|秋分の日|国民の休日|ぶんかのひ|文化の日|きんろうかんしゃのひ|勤労感謝の日|ふりかえきゅうじつ|振替休日/)?.[0]??"";
+ const noMeal=!!holiday;
+ const eventHits=row.filter(w=>/郷土料理|メニュー|行事/.test(w.text));
  const eventWords=row.filter(w=>w.x>width*.3&&w.x<width*.46&&eventHits.some(e=>Math.abs(e.y-w.y)<4)).sort((a,b)=>a.x-b.x);
  const menuWords=row.filter(w=>w.x>width*.115&&w.x<width*.455&&!eventWords.includes(w)&&!/^『|^☆/.test(w.text)&&w.h>=width*.0095);
  const lines:{y:number;items:PdfWord[]}[]=[];for(const w of menuWords.sort((a,b)=>a.y-b.y||a.x-b.x)){const l=lines.find(l=>Math.abs(l.y-w.y)<2);if(l)l.items.push(w);else lines.push({y:w.y,items:[w]});}
  const names=noMeal?[]:lines.map(l=>l.items.sort((a,b)=>a.x-b.x).map(w=>w.text).join("").trim()).filter(Boolean);
  const milk=page.pictures.some(p=>p.x>width*.065&&p.x<width*.12&&p.y>=top&&p.y<bottom&&p.width<width*.05&&p.height<width*.05)?true:null;
- const holiday=all.match(/けいろうのひ|こくみんのきゅうじつ|しゅうぶんのひ|給食なし|休校|祝日|敬老の日|秋分の日|国民の休日/)?.[0]??"";
+ 
  const status=noMeal?"none":names.length?"meal":"unknown";
  const note=status==="unknown"?"献立を読み取れませんでした。手入力するか未登録にしてください。":milk===null&&status==="meal"?"牛乳を確認してください。":"";
- days[date]={date,status,dishes:names.map((name,j)=>({id:`${date}-${j}`,name,reading:kana(name),art:findArt(name)})),milk:status==="meal"?milk:false,event:noMeal?holiday:eventWords.map(w=>w.text.replace(/[☆『』]/g,"")).join(""),note,confirmed:false};
+ days[date]={date,status,dishes:names.map((name,j)=>({id:`${date}-${j}`,name,reading:kana(name),art:findArt(name)})),milk:status==="meal"?milk:false,event:noMeal?holiday:eventWords.map(w=>w.text.replace(/[★☆『』]/g,"")).join(""),note,confirmed:false};
  }
  }
  if(!supported)return{days:{},warnings:["このPDFの形式は自動読み取りに対応していません。原本を見ながら手入力できます。"],detectedMonth,supported:false};
