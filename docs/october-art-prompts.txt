@@ -1,0 +1,24 @@
+SHEET 1
+Use case: stylized-concept. Create a food illustration sprite sheet, portrait aspect ratio EXACTLY 4:5, 4 equal columns by 5 equal rows, 20 square cells. Pure uniform warm-white background. No visible grid, no lines, no labels, no text. Each isolated food serving centered in its own cell, all food and dish wholly within central 80% of cell with generous blank padding. Soft realistic watercolor illustration, slight overhead view, cream ceramic dishes, subtle shadows. No table props, utensils or decorations. Precise row-major placement:
+Row 1: さばのみそソースがけ (mackerel fillet brown miso sauce); もやしのあまずに (bean sprouts in sweet vinegar); むらくもじる (clear soup egg ribbons); ショートニングパン (plain small soft bread roll).
+Row 2: タンドリーチキン (tandoori chicken); ジャーマンポテト (German potatoes with bacon); ベジタブルコーンスープ (vegetable corn soup); ふきよせごはん (autumn mixed rice).
+Row 3: こいわしのつけあげ (small fried sardines); いそかあえ (greens with nori); のっぺいじる (root vegetable clear soup); ケチャップライスホワイトソースがけ (red ketchup rice topped white sauce).
+Row 4: マカロニスープ (macaroni soup); ひじきふりかけ (small portion dark hijiki flakes); まつかぜやき (square chicken meatloaf sesame top); ちゃんこじる (chanko vegetable meat soup).
+Row 5: スパゲッティピザふうソース (tomato spaghetti peppers cheese); ブルーベリーマフィン (blueberry muffin); ハッシュドポーク (brown pork stew on rice); りんご (red apple wedges).
+
+SHEET 2
+Use case: stylized-concept. Create a food illustration sprite sheet, portrait aspect ratio EXACTLY 4:5, 4 equal columns by 5 equal rows, 20 square cells. Pure uniform warm-white background. No visible grid, no lines, no labels, no text. Each isolated food serving centered in its own cell, all food and dish wholly within central 80% of cell with generous blank padding. Soft realistic watercolor illustration, slight overhead view, cream ceramic dishes, subtle shadows. No table props, utensils or decorations. Precise row-major placement:
+Row 1: ココアトースト (cocoa toast); ホワイトシチュー (white cream stew); こまつなサラダ (komatsuna green salad); けんちんうどん (thick udon with root vegetables in broth).
+Row 2: あおなとツナのあえもの (greens with tuna); スイートポテト (Japanese baked sweet potato dessert, golden oval); かじきのピリカラソース (swordfish fillet red spicy sauce); チャーホーサイ (stir fried shredded vegetables with pork).
+Row 3: ちゅうかコーンスープ (Chinese corn egg soup); あんかけやきそば (noodles topped thick vegetable sauce); あおのりポテト (potato pieces with aonori flakes); あおなのスープ (leafy green clear soup).
+Row 4: コーンピラフ (corn pilaf rice); チリコンカン (chili con carne with beans); ジュリエンヌスープ (julienned vegetable clear soup); アップルケーキ (apple cake slice).
+Row 5: おやこどん (chicken egg rice bowl); なめこじる (nameko mushroom miso soup); ビスキュイパン (cookie topped bread roll); ボルシチ (red beet borscht).
+
+SHEET 3
+Use case: stylized-concept. Create a food illustration sprite sheet, portrait aspect ratio EXACTLY 4:5, 4 equal columns by 5 equal rows, 20 square cells. Pure uniform warm-white background. No visible grid, no lines, no labels, no text. Each isolated food serving centered in its own cell, all food and dish wholly within central 80% of cell with generous blank padding. Soft realistic watercolor illustration, slight overhead view, cream ceramic dishes, subtle shadows. No table props, utensils or decorations. Precise row-major placement:
+This sheet has 18 food servings then 2 completely blank cells. Keep last row positions 3 and 4 completely blank warm-white.
+Row 1: くりごはん (chestnut rice); さけのしおやき (grilled salted salmon fillet); だいこんとしらすのおかかあえ (shredded daikon, tiny whitebait and bonito flakes); ごじる (soybean miso vegetable soup).
+Row 2: まめそぼろごはん (rice topped minced beans and meat); いかのかりんあげ (fried squid strips); ドライカレー (minced curry on rice); じゃがいものハニーサラダ (potato honey salad).
+Row 3: みかん (mandarin orange partly peeled with segments); マーボーどうふごはん (mapo tofu rice bowl); バンサンスー (glass noodle cucumber ham salad); いそごはん (nori seaweed rice).
+Row 4: ちぐさやき (vegetable egg loaf squares); ピリカラこんにゃく (spicy konjac cubes); コッペパン (long plain bread roll); パンプキンシチュー (orange pumpkin cream stew).
+Row 5: コーンサラダ (corn salad); おかしなめだまやき (IMPORTANT this is a dessert: perfectly ROUND white milk agar disc topped with glossy yellow peach HALF to imitate fried egg, NOT real egg, no egg browned edge); completely blank; completely blank.

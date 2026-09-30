@@ -1,11 +1,12 @@
 import {z} from "zod";
 import type {AppData,LunchMonth} from "./types";
 import {validDate} from "./dates";
+import {foodCatalog} from "./food-art";
 import {october2026} from "./lunch-2026-10";
 export const emptyData=():AppData=>({version:1,revision:0,months:{"2026-10":october2026},dinner:{},suggestions:{},favorites:[],dislikes:[],images:{},shopping:{}});
 const date=z.string().refine(validDate,"日付が不正です");
 const image=z.string().max(3_000_000).regex(/^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+/=]+$/);
-const dish=z.object({id:z.string().max(100),name:z.string().min(1).max(120),reading:z.string().max(160),art:z.number().int().min(0).max(63).optional(),image:image.optional()});
+const dish=z.object({id:z.string().max(100),name:z.string().min(1).max(120),reading:z.string().max(160),art:z.number().int().min(0).max(foodCatalog.length-1).optional(),image:image.optional()});
 const day=z.object({date,status:z.enum(["meal","none","unknown"]),dishes:z.array(dish).max(15),milk:z.boolean().nullable(),event:z.string().max(300),note:z.string().max(500).optional(),confirmed:z.boolean()});
 const monthBase=z.object({key:z.string().regex(/^\d{4}-(0[1-9]|1[0-2])$/),name:z.string().max(250),pdf:z.string().max(14_000_000).regex(/^data:application\/pdf;base64,[A-Za-z0-9+/=]+$/).optional(),days:z.record(day),importedAt:z.string().max(100)});
 const schema=z.object({version:z.literal(1),revision:z.number().int().nonnegative(),months:z.record(monthBase.extend({previous:monthBase.optional()})),dinner:z.record(z.string().max(80)),suggestions:z.record(z.object({id:z.string().max(80),seen:z.array(z.string()).max(50),trail:z.array(z.string()).max(100)})),favorites:z.array(z.string()).max(100),dislikes:z.array(z.string().max(50)).max(40),images:z.record(image),shopping:z.record(z.array(z.string()).max(100))});
