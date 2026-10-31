@@ -22,9 +22,11 @@ export function parseLayout(pages:PdfPageData[],year:number,month:number):ParseR
  const noMeal=!!holiday;
  const eventHits=row.filter(w=>/郷土料理|メニュー|行事/.test(w.text));
  const eventWords=row.filter(w=>w.x>width*.3&&w.x<width*.46&&eventHits.some(e=>Math.abs(e.y-w.y)<4)).sort((a,b)=>a.x-b.x);
- const menuWords=row.filter(w=>w.x>width*.115&&w.x<width*.455&&!eventWords.includes(w)&&!/^『|^☆/.test(w.text)&&w.h>=width*.0095);
+ // Decorative callouts in the menu column must not become dishes.
+ const isAnnotation=(value:string)=>/いい.{0,8}歯|11月8日|かみかみこんだて|かみかみ献立|和食の日|としょコラボ|図書コラボ|郷土料理|ぐりとぐらとすみれちゃん|11\\(いい\\)月|2\\(にほん\\)4\\(しょく\\)日/.test(norm(value));
+ const menuWords=row.filter(w=>w.x>width*.115&&w.x<width*.455&&!eventWords.includes(w)&&!/^『|^☆/.test(w.text)&&!isAnnotation(w.text)&&w.h>=width*.0095);
  const lines:{y:number;items:PdfWord[]}[]=[];for(const w of menuWords.sort((a,b)=>a.y-b.y||a.x-b.x)){const l=lines.find(l=>Math.abs(l.y-w.y)<2);if(l)l.items.push(w);else lines.push({y:w.y,items:[w]});}
- const names=noMeal?[]:lines.map(l=>l.items.sort((a,b)=>a.x-b.x).map(w=>w.text).join("").trim()).filter(Boolean);
+ const names=noMeal?[]:lines.map(l=>l.items.sort((a,b)=>a.x-b.x).map(w=>w.text).join("").trim()).filter(name=>name&&!isAnnotation(name)&&!/^「.*日」$/.test(name));
  const milk=page.pictures.some(p=>p.x>width*.065&&p.x<width*.12&&p.y>=top&&p.y<bottom&&p.width<width*.05&&p.height<width*.05)?true:null;
  
  const status=noMeal?"none":names.length?"meal":"unknown";
